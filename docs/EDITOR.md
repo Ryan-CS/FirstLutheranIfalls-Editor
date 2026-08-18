@@ -1,48 +1,37 @@
-# Editor & Server Usage
+# Editor And Server Usage
 
-## Start the server
+## Scope
 
-```powershell
+The editor UI and server live in `FirstLutheranIfalls-Editor`. Website pages and assets live in the separate `FirstLutheranIfalls-Website` checkout.
+
+## Runtime
+
+The production target is Linux host `RyskStick`. The current editor runtime port is `8787`.
+
+Run a non-production instance against an explicit external website checkout:
+
+```sh
+WEBSITE_ROOT=/opt/firstlutheran/website \
+BASIC_USER=admin \
+BASIC_PASS='<set outside source control>' \
 npm run dev
 ```
 
-The server runs on `http://localhost:8787`.
+`WEBSITE_ROOT` is the canonical path for page listing, page load/save, uploads, backups, previews, and static content. If it is not defined, the server falls back to `public/` for development compatibility only.
 
-- Public site: `http://localhost:8787/`
-- Admin editor: `http://localhost:8787/admin`
+Do not change `firstlutheran.service` during the current migration phase. `/opt/firstlutheran/site` remains the running rollback copy.
 
-## Basic authentication
+## Editing Flow
 
-Set credentials using environment variables before starting the server:
+1. Open `/admin` on the editor runtime.
+2. Authenticate with the configured editor credentials.
+3. Choose a page from the Website checkout.
+4. Edit the page and click **Save**.
 
-```powershell
-$env:BASIC_USER = "admin"
-$env:BASIC_PASS = "change-this"
-npm run dev
-```
+Save writes the local file under `WEBSITE_ROOT`. Image uploads are written under `WEBSITE_ROOT/uploads/editor/`, and page backups are written under `WEBSITE_ROOT/_backups/`.
 
-Optional:
+Save does not commit, push, or deploy. Publish is a future separate action that will commit and push intended Website-repository changes for Cloudflare Pages deployment.
 
-- `BASIC_REALM` controls the browser prompt label.
-- `BASIC_PROTECT_ALL=1` protects the public site with Basic Auth as well.
+## Planned Public And Admin Hosting
 
-## Editing flow
-
-1. Open the editor at `/admin`.
-2. Choose a page from the left list (HTML files in `public/`).
-3. Edit directly in the preview.
-4. Click **Save** to write changes back to the original file.
-
-## Images
-
-Use **Upload Image** to add a photo. The file is stored in `public/uploads/editor/` and inserted into the page.
-
-## Templates
-
-Use the template picker to insert common layout blocks such as callouts, two-column sections, and event cards.
-
-All edits update the real HTML file inside `public/`.
-
-## Backups
-
-Every save creates a timestamped backup of the prior file in `public/_backups/`.
+The public website will ultimately deploy from `FirstLutheranIfalls-Website` through Cloudflare Pages. `admin.firstlutheranifalls.org` will ultimately reach the editor through Cloudflare Access/MFA and Cloudflare Tunnel. Existing Basic Auth remains in place during the initial migration.

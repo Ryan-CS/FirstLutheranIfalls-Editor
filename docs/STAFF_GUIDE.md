@@ -1,38 +1,22 @@
 # Staff Guide
 
-This guide is for non-technical staff who need to update the website.
+## Editing A Page
 
-## Start the website
+Use the administrator URL supplied by the church technical administrator. During migration, the editor runs on RyskStick at port `8787`; the intended long-term address is `https://admin.firstlutheranifalls.org` behind Cloudflare Access/MFA and Cloudflare Tunnel.
 
-```powershell
-$env:BASIC_USER = "admin"
-$env:BASIC_PASS = "change-this"
-npm run dev
-```
+1. Sign in.
+2. Select a page from the left list.
+3. Edit text directly in the preview.
+4. Use the toolbar for headings, lists, links, and images.
+5. Click **Save** when finished.
 
-Open the editor in your browser:
+## Images
 
-- `http://localhost:8787/admin`
+Choose **Upload Image**, select a file, and the editor inserts it at the current cursor position. Uploaded images are stored in the local Website checkout.
 
-## Edit a page
+## Important Reminders
 
-1. Pick a page from the left list.
-2. Click inside the page and edit text directly.
-3. Use the toolbar for headings, lists, and links.
-4. Click **Save** when finished.
-
-## Add images
-
-1. Click **Upload Image**.
-2. Choose a file from your computer.
-3. The image is inserted where your cursor is.
-
-## Insert a template
-
-Use the template picker to insert a callout, two-column section, or event card.
-
-## Important reminders
-
-- Always click **Save** when you are done.
-- Changes update the real files in `public/` immediately.
-- Backups are stored in `public/_backups/`.
+- Save writes changes to the local Website checkout and creates a backup.
+- Save does not make a public website change by itself.
+- Publish is a separate future action that will send reviewed Website-repository changes to GitHub and Cloudflare Pages.
+- The public site will ultimately remain online through Cloudflare Pages even if RyskStick is offline.

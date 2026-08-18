@@ -1,202 +1,50 @@
 # AGENTS.md
 
-**Project:** First Lutheran Church Website
-**Purpose:** Build and preserve a fully church-owned, self-hostable, beautifully designed website that remains editable, recoverable, and sustainable for decades without reliance on proprietary vendors.
+## Repository Scope
 
----
+`FirstLutheranIfalls-Editor` contains the editor UI, Node server, tests, and operational documentation. It does not contain the canonical public website.
 
-# 1. Absolute Goal
+The paired repository, `FirstLutheranIfalls-Website`, contains the canonical deployable website content. Recovery requires both repositories.
 
-This repository must produce a website that is:
+## Current Migration State
 
-- **Owned entirely by the church**
-- **Editable by non-technical staff**
-- **Free from required paid SaaS**
-- **Recoverable from this repository alone**
-- **Stable and maintainable for 10+ years**
-- **Visually warm, welcoming, and intentional**
+- Production target: Linux host `RyskStick`.
+- Current editor runtime port: `8787`.
+- `/opt/firstlutheran/site` remains the running production rollback copy during migration. Do not modify, delete, or repurpose it without an explicit cutover plan.
+- The editor is being prepared to run from `/opt/firstlutheran/editor` against an external website checkout at `/opt/firstlutheran/website`.
+- The production systemd service, Cloudflare, DNS, Basic Auth, and tunnel configuration are out of scope unless explicitly requested.
 
-This is **permanent community infrastructure**.
+## Architecture
 
----
+The editor reads and writes its content through `WEBSITE_ROOT`:
 
-# 2. Non-Negotiable Principles
-
-## Ownership
-
-- Domain, files, and hosting remain under **church control**.
-- No dependency may exist that could **lock the church out**.
-
-## Cost
-
-- Operation must be possible with **zero required subscriptions**.
-
-## Longevity
-
-- Must run on **ordinary Windows consumer hardware**.
-- Must be restorable by a **future volunteer with minimal context**.
-- All knowledge must exist inside:
-  - `AGENTS.md`
-  - `README.md`
-  - the repository itself
-    **Never only in memory.**
-
-## Safety
-
-- Every change must be **reversible via git**.
-- Core layout (navigation, header, footer) must always be **recoverable**.
-
----
-
-# 3. Design Is Equal to Engineering
-
-The finished site must feel:
-
-- **Warm**
-- **Human**
-- **Community-centered**
-- **Clear and calm**
-
-### Visual language
-
-- Earth tones: **browns, reds, tans, whites**
-- Clean typography
-- Strong mobile usability
-- No generic template appearance
-- No corporate SaaS aesthetic
-
-**Good design is required for success.
-Technical correctness alone is failure.**
-
----
-
-# 4. Repository Reality
-
-Current starting contents:
-
-```
-firstlutheranifalls/
-├─ AGENTS.md
-├─ previous_version/   ← historical scrape (read-only archive)
+```text
+Editor repository -> editor UI, server, tests, documentation
+Website repository -> HTML, assets, files, posts, uploads, robots.txt
 ```
 
-### Historical archive rule
+For development only, the server falls back to `public/` when `WEBSITE_ROOT` is unset. The production migration must set `WEBSITE_ROOT` explicitly to the Website checkout.
 
-`previous_version/`:
+The future public website will deploy from `FirstLutheranIfalls-Website` through Cloudflare Pages. Once that cutover is complete, public availability must not depend on RyskStick.
 
-- Must **never be modified or deleted**
-- Exists for:
-  - content recovery
-  - verification
-  - continuity of community history
+The future admin route is `admin.firstlutheranifalls.org`, protected by Cloudflare Access/MFA and Cloudflare Tunnel, with the editor on RyskStick. Existing Basic Auth remains in place during the initial migration.
 
----
+## Save And Publish
 
-# 5. Required Final Architecture
+Save and Publish are separate operations.
 
-The completed system will contain:
+- **Save** writes a page, upload, and backup to the local Website checkout at `WEBSITE_ROOT`. It does not make a Git commit or push a deployment.
+- **Publish** is a future operation. It will review intended Website-repository changes, commit them, push them, and allow Cloudflare Pages to deploy them.
 
-```
-server/   → local web server + save API
-public/   → canonical live website files
-admin/    → browser WYSIWYG editor
-docs/     → human documentation
-```
+Do not implement automatic Git publishing, modify the production service, or change Cloudflare configuration without an explicitly scoped migration phase.
 
-Edits made in the editor must:
+## Safety Rules
 
-- Modify **real site files**
-- Be **immediately live**
-- Be **captured in git history**
+- Never commit credentials, access tokens, Cloudflare tunnel data, Basic Auth values, runtime logs, or backups.
+- Keep editor implementation and public website content in their separate repositories.
+- Use small, reversible changes and run `npm test` and `npm run lint` for editor changes.
+- Preserve `/opt/firstlutheran/site` as the rollback copy until final cutover is confirmed.
 
----
+## Recovery
 
-# 6. Environment Contract
-
-The finished system runs on:
-
-- **Windows 10**
-- **Node.js 20**
-- **npm**
-- **PowerShell**
-- **Local port 8787**
-- **HTTP Basic authentication**
-
-No additional mandatory runtime is allowed.
-
----
-
-# 7. Agent Development Law
-
-Agents working in this repository must follow strict discipline.
-
-## Documentation
-
-- Record **every structural decision**.
-- Explain reasoning in **plain language**.
-- Make **no hidden assumptions**.
-
-## Commits
-
-- Commit **frequently**.
-- Messages must explain:
-  - what changed
-  - why
-  - risk or impact
-
-## Testing Before Commit
-
-Before any commit:
-
-- Server starts
-- Editor loads
-- Saving a page preserves valid content
-
-If uncertain → **do not commit**.
-
-## Branch Safety
-
-Breaking or structural work must:
-
-1. Occur on a **separate branch**
-2. Be **validated**
-3. Merge only when stable
-
-`main` must remain **recoverable at all times**.
-
----
-
-# 8. Deployment End State
-
-The website must be deployable using:
-
-- A **local mini-PC or small server**
-- **Cloudflare Tunnel** or equivalent for public access
-- **Static hosting fallback** if needed
-
-Deployment must preserve:
-
-- Ownership
-- zero-subscription operation
-- long-term recoverability
-
----
-
-# 9. Definition of Success
-
-The project is successful only when:
-
-- The church **fully controls** its website.
-- A future volunteer can **restore everything from this repo alone**.
-- The site is:
-  - **beautiful**
-  - **welcoming**
-  - **easy to edit**
-  - **stable for decades**
-
-If any of these are untrue,
-**the project is not complete.**
-
----
-
-**End of AGENTS.md**
+Recovery requires the Editor repository, the Website repository, documented runtime configuration, and any required hosting/identity configuration. The Editor repository alone cannot restore the public site.
