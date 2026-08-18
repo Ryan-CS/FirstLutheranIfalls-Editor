@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+
+# Historical archive (read-only)
+previous_version/
+
+# Legacy site copy (unformatted HTML/CSS/JS from scrape)
+public/**/*.html
+public/files/
+public/posts/
