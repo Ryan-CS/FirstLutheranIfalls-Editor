@@ -29,7 +29,9 @@ When `WEBSITE_ROOT` is not set, the server uses `public/` as a development fallb
 
 Saving writes changes, uploads, and backups to the local Website checkout. Saving does not publish a website.
 
-Publish is a future, deliberate operation that will review Website-repository changes, commit only intended files, push them to GitHub, and allow Cloudflare Pages to deploy them. Git Publish automation is not implemented yet.
+**Create publish commit** is a deliberate local-only operation. It reviews and stages only allowed Website-content paths, then creates a local Git commit in the Website checkout. It does not push to GitHub or deploy a website. See `docs/PUBLISHING.md` for staging rules.
+
+A future Publish-to-GitHub operation may push a reviewed local commit to GitHub and allow Cloudflare Pages to deploy it. That operation is intentionally not implemented yet.
 
 ## Development Checks
 

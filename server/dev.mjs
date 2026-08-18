@@ -1,4 +1,5 @@
 import http from "node:http";
+import { createPublishCommit } from "./publish.mjs";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -22,6 +23,7 @@ const BASIC_PASS = process.env.BASIC_PASS || "admin";
 const BASIC_REALM = process.env.BASIC_REALM || "First Lutheran Admin";
 const PROTECT_ALL = process.env.BASIC_PROTECT_ALL === "1";
 const BACKUP_RETENTION = Number(process.env.BACKUP_RETENTION || 20);
+const WEBSITE_GIT_BRANCH = process.env.WEBSITE_GIT_BRANCH || "main";
 
 const MAX_BODY_BYTES = 5 * 1024 * 1024;
 
@@ -248,6 +250,30 @@ async function handleApi(req, res, url) {
     }
   }
 
+  if (req.method === "POST" && url.pathname === "/__api/publish") {
+    let data = {};
+    try {
+      const payload = await readBody(req, MAX_BODY_BYTES);
+      data = payload ? JSON.parse(payload) : {};
+    } catch {
+      return sendJson(res, 400, { ok: false, error: "Invalid JSON" });
+    }
+    if (data.message !== undefined && typeof data.message !== "string") {
+      return sendJson(res, 400, { ok: false, error: "Publish message must be text" });
+    }
+
+    try {
+      const result = await createPublishCommit({
+        websiteRoot,
+        expectedBranch: WEBSITE_GIT_BRANCH,
+        message: data.message
+      });
+      if (result.ok) await logAudit("publish", `${result.commit} (${result.files.length} files)`, req.authUser);
+      return sendJson(res, result.status, result);
+    } catch {
+      return sendJson(res, 500, { ok: false, error: "Publish failed unexpectedly" });
+    }
+  }
   if (req.method === "POST" && url.pathname === "/__api/upload") {
     let payload = "";
     try {

@@ -2,6 +2,7 @@ const pageList = document.getElementById("page-list");
 const canvas = document.getElementById("canvas");
 const statusEl = document.getElementById("status");
 const saveButton = document.getElementById("save");
+const publishButton = document.getElementById("publish");
 const openLiveButton = document.getElementById("open-live");
 const toolbar = document.getElementById("toolbar");
 const addLinkButton = document.getElementById("add-link");
@@ -69,7 +70,7 @@ async function loadPages() {
     state.pages = data.pages || [];
     renderPages();
     if (state.pages.length === 0) {
-      setStatus("No pages found in /public.");
+      setStatus("No pages found in the Website checkout.");
     } else {
       setStatus("Select a page to edit.");
     }
@@ -139,6 +140,25 @@ async function savePage() {
   }
 }
 
+async function publishChanges() {
+  const confirmed = window.confirm(
+    "Create a local Git commit for the saved Website changes? This does not publish to the internet."
+  );
+  if (!confirmed) return;
+
+  setStatus("Creating local publish commit...");
+  try {
+    const result = await fetchJson("/__api/publish", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    });
+    setStatus(`Created local publish commit ${result.commit.slice(0, 12)}`, "success");
+  } catch (error) {
+    console.error(error);
+    setStatus("Publish commit was not created. Review the saved Website changes.");
+  }
+}
 function execCommand(command, value = null) {
   const doc = canvas.contentDocument;
   if (!doc) return;
@@ -165,6 +185,7 @@ function insertHtml(html) {
 }
 
 saveButton.addEventListener("click", savePage);
+publishButton.addEventListener("click", publishChanges);
 openLiveButton.addEventListener("click", () => {
   if (!state.currentPath) {
     setStatus("Select a page to open.");

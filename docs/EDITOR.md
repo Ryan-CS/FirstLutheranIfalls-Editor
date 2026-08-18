@@ -30,7 +30,7 @@ Do not change `firstlutheran.service` during the current migration phase. `/opt/
 
 Save writes the local file under `WEBSITE_ROOT`. Image uploads are written under `WEBSITE_ROOT/uploads/editor/`, and page backups are written under `WEBSITE_ROOT/_backups/`.
 
-Save does not commit, push, or deploy. Publish is a future separate action that will commit and push intended Website-repository changes for Cloudflare Pages deployment.
+Save does not commit, push, or deploy. **Create publish commit** is a separate local-only action that creates a Git commit for reviewed Website-repository changes. It does not push or deploy. See `docs/PUBLISHING.md` for allowed staging paths and rejection rules.
 
 ## Planned Public And Admin Hosting
 

@@ -34,9 +34,10 @@ The future admin route is `admin.firstlutheranifalls.org`, protected by Cloudfla
 Save and Publish are separate operations.
 
 - **Save** writes a page, upload, and backup to the local Website checkout at `WEBSITE_ROOT`. It does not make a Git commit or push a deployment.
-- **Publish** is a future operation. It will review intended Website-repository changes, commit them, push them, and allow Cloudflare Pages to deploy them.
+- **Create publish commit** reviews and stages only allowed Website-repository changes, then creates a local Git commit. It does not push or deploy.
+- **Publish to GitHub** is a future operation. It may push a reviewed local commit and allow Cloudflare Pages to deploy it.
 
-Do not implement automatic Git publishing, modify the production service, or change Cloudflare configuration without an explicitly scoped migration phase.
+Do not implement GitHub push behavior, modify the production service, or change Cloudflare configuration without an explicitly scoped migration phase.
 
 ## Safety Rules
 
