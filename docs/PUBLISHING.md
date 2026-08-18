@@ -1,12 +1,16 @@
-# Local Publish Commits
+# Publishing Website Changes
 
-The **Create publish commit** control creates a local Git commit in the Website checkout. It does not push to GitHub, deploy Cloudflare Pages, or make a page live on the internet.
+**Save** writes page, upload, and backup changes locally under `WEBSITE_ROOT`. It does not commit or push.
 
-## Preconditions
+**Publish to Website GitHub** performs a guarded Git workflow:
 
-- `WEBSITE_ROOT` must be a Git working tree.
-- The checkout must be on the expected branch. The default is `main`; set `WEBSITE_GIT_BRANCH` only for an explicitly scoped workflow.
-- There must be no pre-staged changes.
+1. Fetch `origin`.
+2. Require the Website checkout to be on the configured branch (`main` by default) and exactly synchronized with `origin/main`.
+3. Stage only allowed content paths.
+4. Create one local commit.
+5. Push that commit to `origin/main` without force.
+
+A successful Publish response includes the commit SHA, branch, and `pushed: true`. It does not configure or trigger Cloudflare Pages, so a successful Git push does not yet guarantee a public internet deployment.
 
 ## Staging Rules
 
@@ -16,6 +20,10 @@ Allowed paths are top-level `*.html`, top-level `robots.txt`, and content beneat
 
 The operation rejects backups, logs, temporary files, editor/server/test/documentation paths, hidden environment files, symlinks, unsupported paths, and common credential material in text content. Ignored `_backups/` content is not staged.
 
-## Next Phase
+## Safe Failure And Retry
 
-A future Publish-to-GitHub operation may push a reviewed local commit to the Website repository. That operation is intentionally not implemented here.
+Publish fails before committing if `origin/main` has advanced, history has diverged, or unrelated local commits are already ahead of origin. It never auto-merges or force-pushes.
+
+If commit creation succeeds but the push fails, the local commit remains intact and the response includes its SHA with `pushed: false`. The editor records a local pending marker for that exact commit. After the remote problem is corrected, selecting Publish again retries only that marked commit; it does not commit or push unrelated local history.
+
+Cloudflare Pages deployment remains intentionally out of scope.

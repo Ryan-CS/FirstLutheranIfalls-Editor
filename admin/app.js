@@ -142,21 +142,21 @@ async function savePage() {
 
 async function publishChanges() {
   const confirmed = window.confirm(
-    "Create a local Git commit for the saved Website changes? This does not publish to the internet."
+    "Create and push a Git commit for the saved Website changes? This does not deploy the public website yet."
   );
   if (!confirmed) return;
 
-  setStatus("Creating local publish commit...");
+  setStatus("Creating and pushing publish commit...");
   try {
     const result = await fetchJson("/__api/publish", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({})
     });
-    setStatus(`Created local publish commit ${result.commit.slice(0, 12)}`, "success");
+    setStatus(`Published Git commit ${result.commit.slice(0, 12)}`, "success");
   } catch (error) {
     console.error(error);
-    setStatus("Publish commit was not created. Review the saved Website changes.");
+    setStatus("Publish did not complete. Resolve the reported Git state before retrying.");
   }
 }
 function execCommand(command, value = null) {
