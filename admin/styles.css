@@ -26,6 +26,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 18px;
   padding: 18px 28px;
   border-bottom: 1px solid var(--border);
   background: #fffaf2;
@@ -47,7 +48,9 @@ body {
 
 .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
+  justify-content: flex-end;
 }
 
 .btn {
@@ -61,15 +64,73 @@ body {
   transition: transform 0.1s ease, box-shadow 0.2s ease;
 }
 
-.btn:hover {
+.btn:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(47, 59, 47, 0.12);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn--primary {
   background: var(--brick);
   border-color: var(--brick);
   color: #fffaf2;
+}
+
+.authbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 28px;
+  background: #fdf6eb;
+  border-bottom: 1px solid var(--border);
+}
+
+.auth-help {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.auth-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.auth-controls label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.auth-controls input {
+  min-width: 220px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.connection-state {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.connection-state[data-tone="success"] {
+  color: var(--pine);
+  font-weight: 600;
+}
+
+.connection-state[data-tone="error"] {
+  color: var(--brick);
+  font-weight: 600;
 }
 
 .layout {
@@ -85,7 +146,7 @@ body {
   border-radius: 18px;
   padding: 16px;
   box-shadow: var(--shadow);
-  height: calc(100vh - 140px);
+  height: calc(100vh - 205px);
   overflow: auto;
 }
 
@@ -151,6 +212,11 @@ body {
   font-weight: 600;
 }
 
+.status[data-tone="error"] {
+  color: var(--brick);
+  font-weight: 600;
+}
+
 .canvas {
   flex: 1;
   min-height: 70vh;
@@ -162,6 +228,17 @@ body {
 }
 
 @media (max-width: 980px) {
+  .topbar,
+  .authbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .actions,
+  .auth-controls {
+    justify-content: flex-start;
+  }
+
   .layout {
     grid-template-columns: 1fr;
   }

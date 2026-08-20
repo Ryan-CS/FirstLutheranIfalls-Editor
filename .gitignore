@@ -7,6 +7,8 @@ yarn-error.log*
 # Env
 .env
 .env.*
+.dev.vars
+worker/.dev.vars
 
 # Python
 .venv/
@@ -21,6 +23,8 @@ Thumbs.db
 # Runtime
 public/_backups/
 logs/
+.wrangler/
+worker/.wrangler/
 
 # Claude Code
 .claude/

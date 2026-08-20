@@ -1,0 +1,3 @@
+# Copy to .dev.vars for local testing. Never commit real values.
+GITHUB_TOKEN=replace-with-fine-grained-test-token
+EDITOR_API_TOKEN=replace-with-a-long-random-test-token

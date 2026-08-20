@@ -3,21 +3,35 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>First Lutheran Editor</title>
-    <link rel="stylesheet" href="/admin/styles.css" />
+    <title>First Lutheran Editor - Migration Test</title>
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="topbar">
       <div class="brand">
         <span class="brand__title">First Lutheran Editor</span>
-        <span class="brand__subtitle">Save locally, then create a local Git publish commit</span>
+        <span class="brand__subtitle">Migration test: GitHub Pages frontend → Cloudflare Worker → GitHub test branch</span>
       </div>
       <div class="actions">
-        <button type="button" class="btn" id="open-live">Open Live Page</button>
-        <button type="button" class="btn btn--primary" id="save">Save</button>
-        <button type="button" class="btn" id="publish">Publish to Website GitHub</button>
+        <button type="button" class="btn" id="open-live">Open Test Site</button>
+        <button type="button" class="btn btn--primary" id="save" disabled>Save Draft</button>
+        <button type="button" class="btn" id="publish" disabled>Publish Test Branch</button>
+        <button type="button" class="btn" id="discard" disabled>Discard Draft</button>
       </div>
     </header>
+
+    <section class="authbar" aria-label="Editor authentication">
+      <div>
+        <strong>Test editor authentication</strong>
+        <span class="auth-help">Enter the Worker editor token. It stays in this browser tab's memory and is never stored in GitHub.</span>
+      </div>
+      <div class="auth-controls">
+        <label for="session-token">Editor token</label>
+        <input id="session-token" type="password" autocomplete="current-password" spellcheck="false" />
+        <button type="button" class="btn btn--primary" id="connect">Connect</button>
+        <span id="connection-state" class="connection-state">Not connected</span>
+      </div>
+    </section>
 
     <main class="layout">
       <aside class="sidebar">
@@ -47,12 +61,13 @@
             <button type="button" class="btn" id="insert-template">Insert</button>
           </div>
         </div>
-        <div class="status" id="status">Choose a page to begin.</div>
-        <iframe class="canvas" id="canvas" title="Editor canvas"></iframe>
+        <div class="status" id="status">Connect to the test Worker to begin.</div>
+        <iframe class="canvas" id="canvas" title="Editor canvas" sandbox="allow-same-origin"></iframe>
       </section>
     </main>
     <input type="file" id="image-input" accept="image/*" hidden />
 
-    <script src="/admin/app.js" type="module"></script>
+    <script src="./config.js"></script>
+    <script src="./app.js" type="module"></script>
   </body>
 </html>
