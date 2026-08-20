@@ -8,5 +8,8 @@
     "GITHUB_REPO": "FirstLutheranIfalls-Website",
     "TARGET_BRANCH": "migration/github-pages-worker-test",
     "DRAFT_BRANCH": "editor-test-draft"
+  },
+  "secrets": {
+    "required": ["GITHUB_TOKEN", "EDITOR_API_TOKEN"]
   }
 }
