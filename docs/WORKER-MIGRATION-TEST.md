@@ -12,9 +12,9 @@ GitHub Pages (admin/ frontend only)
         |
         | HTTPS + Bearer editor token
         v
-first-lutheran-editor-api.ryan-skogstad.workers.dev
+firstlutheranifalls-editor.ryan-skogstad.workers.dev
         |
-        | GITHUB_TOKEN stored only as Worker secret
+        | GITHUB_TOKEN stored only as Worker runtime secret
         v
 Ryan-CS/FirstLutheranIfalls-Website
         |- migration/github-pages-worker-test  <- published test site
@@ -29,11 +29,16 @@ For production, replace the simple bearer-token gate with an identity system suc
 
 Create/import a Worker from the `worker/` directory on this branch.
 
-- Worker name: `first-lutheran-editor-api`
+- Worker name: `firstlutheranifalls-editor`
 - Root directory: `worker`
 - Deploy command: `npx wrangler deploy`
-- Worker secret: `GITHUB_TOKEN`
-- Worker secret: `EDITOR_API_TOKEN`
+- Build variable: `SKIP_DEPENDENCY_INSTALL=true`
+- Runtime Worker secret: `GITHUB_TOKEN`
+- Runtime Worker secret: `EDITOR_API_TOKEN`
+
+The Wrangler config intentionally does not declare required secrets during bootstrap. This allows the Worker to deploy before runtime secrets exist. Until both runtime secrets are added, `/api/health` reports their configuration state and protected editor routes remain unusable.
+
+After the first successful deployment, add `GITHUB_TOKEN` and `EDITOR_API_TOKEN` under the deployed Worker's runtime **Variables and Secrets** settings. They are not build variables and are not required during `npx wrangler deploy` itself.
 
 `GITHUB_TOKEN` should be a fine-grained GitHub credential limited to the `FirstLutheranIfalls-Website` repository with only the permissions necessary to read/write contents and refs. Do not use a broad account token.
 
@@ -82,15 +87,17 @@ The repository may need to be public, or the GitHub account must support Pages f
 
 ## Test checklist
 
-1. Confirm `https://first-lutheran-editor-api.ryan-skogstad.workers.dev/api/health` reports both Worker secrets configured.
-2. Open `https://admin.firstlutheranifalls.site/`.
-3. Enter the test `EDITOR_API_TOKEN` and Connect.
-4. Load a page and make a harmless visible test edit.
-5. Save Draft and verify the public site has not changed yet.
-6. Publish Test Branch.
-7. Wait for the Website GitHub Pages workflow to complete.
-8. Refresh `https://firstlutheranifalls.site/` and verify the change.
-9. Make another draft edit, choose Discard Draft, and verify it never reaches the published test branch.
+1. Deploy the Worker successfully.
+2. Add `GITHUB_TOKEN` and `EDITOR_API_TOKEN` as runtime Worker secrets.
+3. Confirm `https://firstlutheranifalls-editor.ryan-skogstad.workers.dev/api/health` reports both Worker secrets configured.
+4. Open `https://admin.firstlutheranifalls.site/`.
+5. Enter the test `EDITOR_API_TOKEN` and Connect.
+6. Load a page and make a harmless visible test edit.
+7. Save Draft and verify the public site has not changed yet.
+8. Publish Test Branch.
+9. Wait for the Website GitHub Pages workflow to complete.
+10. Refresh `https://firstlutheranifalls.site/` and verify the change.
+11. Make another draft edit, choose Discard Draft, and verify it never reaches the published test branch.
 
 ## Security notes
 

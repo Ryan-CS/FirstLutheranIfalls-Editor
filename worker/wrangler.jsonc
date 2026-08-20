@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "first-lutheran-editor-api",
+  "name": "firstlutheranifalls-editor",
   "main": "./src/index.js",
   "compatibility_date": "2026-08-20",
   "vars": {
@@ -8,8 +8,5 @@
     "GITHUB_REPO": "FirstLutheranIfalls-Website",
     "TARGET_BRANCH": "migration/github-pages-worker-test",
     "DRAFT_BRANCH": "editor-test-draft"
-  },
-  "secrets": {
-    "required": ["GITHUB_TOKEN", "EDITOR_API_TOKEN"]
   }
 }
