@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "first-lutheran-editor-api",
+  "main": "./src/index.js",
+  "compatibility_date": "2026-08-20",
+  "vars": {
+    "GITHUB_OWNER": "Ryan-CS",
+    "GITHUB_REPO": "FirstLutheranIfalls-Website",
+    "TARGET_BRANCH": "migration/github-pages-worker-test",
+    "DRAFT_BRANCH": "editor-test-draft"
+  }
+}
