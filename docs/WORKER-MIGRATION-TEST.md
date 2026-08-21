@@ -8,7 +8,7 @@ This branch demonstrates the planned serverless editor architecture against the 
 admin.firstlutheranifalls.site
         |
         v
-GitHub Pages (docs/ frontend only)
+GitHub Pages (migration branch root)
         |
         | HTTPS + Bearer editor token
         v
@@ -42,7 +42,7 @@ After the first successful deployment, add `GITHUB_TOKEN` and `EDITOR_API_TOKEN`
 
 `GITHUB_TOKEN` should be a fine-grained GitHub credential limited to the `FirstLutheranIfalls-Website` repository with only the permissions necessary to read/write contents and refs. Do not use a broad account token.
 
-Generate `EDITOR_API_TOKEN` as a long random value. Staff enter it into the test editor when connecting. Never put it in `docs/config.js`.
+Generate `EDITOR_API_TOKEN` as a long random value. Staff enter it into the test editor when connecting. Never put it in `admin/config.js`.
 
 The non-secret Worker variables are declared in `worker/wrangler.jsonc`:
 
@@ -84,10 +84,10 @@ The website GitHub Pages workflow is triggered when the migration test branch ad
 Repository Settings → Pages should use **Deploy from a branch** with:
 
 - Branch: `migration/github-pages-worker-test`
-- Folder: `/docs`
+- Folder: `/(root)`
 - Custom domain: `admin.firstlutheranifalls.site`
 
-The `docs/` directory contains the editor frontend (`index.html`, `app.js`, `styles.css`, and `config.js`) plus `CNAME` and `.nojekyll`. The previous custom Pages Actions workflow has been removed from this migration branch.
+The migration branch root contains `index.html`, `CNAME`, and `.nojekyll`. The root page loads the editor's existing `admin/styles.css`, `admin/config.js`, and `admin/app.js`, so the `admin/` directory remains the canonical browser-editor asset location. The `docs/` directory remains documentation only. The previous custom Pages Actions workflow has been removed from this migration branch.
 
 The repository may need to be public, or the GitHub account must support Pages for private repositories.
 
@@ -96,7 +96,7 @@ The repository may need to be public, or the GitHub account must support Pages f
 1. Deploy the Worker successfully.
 2. Add `GITHUB_TOKEN` and `EDITOR_API_TOKEN` as runtime Worker secrets.
 3. Confirm `https://firstlutheranifalls-editor.ryan-skogstad.workers.dev/api/health` reports both Worker secrets configured.
-4. Configure GitHub Pages to deploy `migration/github-pages-worker-test` from `/docs`.
+4. Configure GitHub Pages to deploy `migration/github-pages-worker-test` from `/(root)`.
 5. Open `https://admin.firstlutheranifalls.site/`.
 6. Enter the test `EDITOR_API_TOKEN` and Connect.
 7. Load a page and make a harmless visible test edit.
