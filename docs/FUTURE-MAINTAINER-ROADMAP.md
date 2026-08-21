@@ -63,39 +63,90 @@ A future static-file host can serve the site. A future version-control provider 
 
 This does not guarantee a 50-year lifespan. No one can guarantee that. It means the design is intended to survive ordinary generations of hosting products and infrastructure by depending on portable fundamentals rather than a particular product stack.
 
-## 3. Mental model in one diagram
+## 3. Mental model: two paths, one source of truth
 
 ![First Lutheran durable publishing architecture](assets/durable-publishing-architecture.svg)
 
-The diagram is intentionally concept-first. The durable roles are the important part; the provider names shown inside it are the current 2026 implementation and can be replaced independently.
+The picture is deliberately information-dense. Read the **role names** first and the smaller current-provider labels second. The left side is the privileged staff path. The right side is the unprivileged visitor path. They do not share an application server: they meet through the versioned canonical Website store.
 
-In the current implementation:
+The most important boundary in the picture is this: **visitors never pass through the trusted publishing service, and the privileged repository write credential never reaches a browser.** Staff changes reach visitors only after they have first become versioned unpublished state and then pass an explicit safe-publish check.
+
+The current implementation is:
 
 ```text
-Static public file host        = GitHub Pages
-Versioned Website file store   = GitHub repository using Git history
-Trusted publishing service     = Cloudflare Worker
-Unpublished state              = editor-test-draft branch
-Published state                = migration/github-pages-worker-test branch
+Admin domain-name routing       = admin.firstlutheranifalls.site
+Static editor interface         = GitHub Pages · FirstLutheranIfalls-Editor
+Trusted publishing service      = Cloudflare Worker · firstlutheranifalls-editor
+Versioned Website file store    = GitHub · Ryan-CS/FirstLutheranIfalls-Website
+Unpublished state               = editor-test-draft branch
+Published state                 = migration/github-pages-worker-test branch
+Static public file host         = GitHub Pages · FirstLutheranIfalls-Website
+Public domain-name routing      = firstlutheranifalls.site
+Optional public-data helper     = separate firstlutheranifalls-website Worker
 ```
 
-If the image cannot be rendered in whatever system is being used to read this document, the same architecture can be understood as:
+The optional public-data helper currently fetches public YouTube RSS information. It holds no repository publishing credential and is **not** part of the privileged publishing chain. If it fails, static page publishing should still be conceptually independent of it.
+
+If the image cannot be rendered, the full conceptual model is:
 
 ```text
-Staff editing interface
-        |
-        v
+STAFF / PRIVILEGED PATH
+
+Staff browser
+      |
+      v
+Admin domain-name routing
+      |
+      v
+Static editor interface
+      |
+      | authenticated encrypted request
+      v
 Constrained trusted publishing service
-        |
-        v
-Versioned canonical storage
-        |
-        +---- unpublished state
-        |
-        `---- published state ----> static public delivery ----> visitor
+      |  privileged repository credential exists HERE ONLY
+      |  validated read/save/upload/publish/discard operations
+      v
+Versioned canonical Website store
+      |
+      +--> Unpublished state
+      |         |
+      |         | explicit safe publish
+      |         | (advance only when histories are compatible;
+      |         |  never force-overwrite published state)
+      |         v
+      `--> Published state
+                |
+                | published files / deployment source
+                v
+        Static public file host
+                ^
+                |
+        Public domain-name routing
+                ^
+                |
+          Visitor browser
+
+PUBLIC / UNPRIVILEGED PATH
+
+Visitor browser
+      |
+      v
+Public domain-name routing
+      |
+      v
+Static public file host
+      ^
+      | receives only published files
+      |
+Published state in the same versioned canonical Website store
+
+Visitors do NOT traverse the trusted publishing service.
+The public host does NOT need the repository publishing credential.
 ```
 
-The trusted publishing service is not hosting the editor and is not hosting the website. Its purpose is to be a **credential and policy boundary** between an untrusted browser and privileged write access to the website's canonical files.
+There are two different kinds of arrows here. The visitor path represents a public request for already-published files. The arrow from **Published state** to the static public host represents the publication/deployment source. Keeping those ideas separate prevents a common misunderstanding: GitHub Pages (or a future static host) serves the site, while the trusted publishing service controls whether new canonical content is allowed to become published state.
+
+The trusted publishing service is therefore not the website host and is not the editor host. Its purpose is to be a **credential and policy boundary** between an untrusted staff browser and privileged modification of the Website's canonical files.
 
 ## 4. The most important distinction: replaceable details vs. design invariants
 
