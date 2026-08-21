@@ -19,24 +19,10 @@ The production target is the Linux host `RyskStick`. The editor runtime listens 
 
 The server operates on an external website directory supplied by `WEBSITE_ROOT`:
 
-```sh
+```bash
 WEBSITE_ROOT=/opt/firstlutheran/website npm run dev
 ```
 
-When `WEBSITE_ROOT` is not set, the server uses `public/` as a development fallback. The production migration must set `WEBSITE_ROOT` explicitly. `/opt/firstlutheran/site` remains the current running rollback copy and must not be changed during this migration phase.
+## Migration test
 
-## Save And Publish
-
-Saving writes changes, uploads, and backups to the local Website checkout. Saving does not publish a website.
-
-**Publish to Website GitHub** is a deliberate Git operation. It reviews and stages only allowed Website-content paths, creates a local commit, and pushes it to Website `origin/main` without force. It does not configure or trigger Cloudflare Pages, so a successful push is not yet public deployment. See `docs/PUBLISHING.md` for staging and retry rules.
-
-## Development Checks
-
-```sh
-npm ci
-npm test
-npm run lint
-```
-
-See `docs/EDITOR.md`, `docs/BACKUPS.md`, and `docs/STAFF_GUIDE.md` for operating guidance. Recovery requires both repositories, not this Editor repository alone.
+The `migration/github-pages-worker-test` branch is also used to test the serverless editor architecture at `admin.firstlutheranifalls.site`. For that test, GitHub Pages should deploy the migration branch from `/(root)`, where `index.html`, `app.js`, `styles.css`, `config.js`, `CNAME`, and `.nojekyll` form the Pages frontend. The `docs/` directory remains documentation only.
