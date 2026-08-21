@@ -20,53 +20,54 @@
       </div>
     </header>
 
+    <section class="authbar" aria-label="Editor authentication">
+      <div>
+        <strong>Test editor authentication</strong>
+        <span class="auth-help">Enter the Worker editor token. It stays in this browser tab's memory and is never stored in GitHub.</span>
+      </div>
+      <div class="auth-controls">
+        <label for="session-token">Editor token</label>
+        <input id="session-token" type="password" autocomplete="current-password" spellcheck="false" />
+        <button type="button" class="btn btn--primary" id="connect">Connect</button>
+        <span id="connection-state" class="connection-state">Not connected</span>
+      </div>
+    </section>
+
     <main class="layout">
       <aside class="sidebar">
-        <section class="panel">
-          <h2>Connection</h2>
-          <label for="editor-token">Editor API token</label>
-          <input id="editor-token" type="password" autocomplete="off" placeholder="Paste temporary test token" />
-          <button type="button" class="btn btn--primary" id="connect">Connect</button>
-          <p class="muted" id="connection-status">Not connected.</p>
-        </section>
-
-        <section class="panel">
-          <h2>Pages</h2>
-          <button type="button" class="btn" id="refresh-pages" disabled>Refresh pages</button>
-          <select id="page-list" size="12" disabled aria-label="Editable pages"></select>
-        </section>
-
-        <section class="panel">
-          <h2>Draft status</h2>
-          <pre id="draft-status">Connect to load status.</pre>
-        </section>
+        <div class="sidebar__header">Pages</div>
+        <div class="sidebar__list" id="page-list"></div>
       </aside>
 
-      <section class="workspace">
-        <div class="workspace__header">
-          <div>
-            <h1 id="page-title">No page selected</h1>
-            <p class="muted" id="page-path"></p>
+      <section class="editor">
+        <div class="toolbar" id="toolbar">
+          <button type="button" class="btn" data-cmd="bold">Bold</button>
+          <button type="button" class="btn" data-cmd="italic">Italic</button>
+          <button type="button" class="btn" data-cmd="underline">Underline</button>
+          <button type="button" class="btn" data-cmd="insertUnorderedList">Bullets</button>
+          <button type="button" class="btn" data-cmd="insertOrderedList">Numbered</button>
+          <button type="button" class="btn" data-cmd="formatBlock" data-value="h2">Heading</button>
+          <button type="button" class="btn" data-cmd="formatBlock" data-value="h3">Subhead</button>
+          <button type="button" class="btn" data-cmd="formatBlock" data-value="p">Paragraph</button>
+          <button type="button" class="btn" id="add-link">Link</button>
+          <button type="button" class="btn" id="upload-image">Upload Image</button>
+          <div class="template-picker">
+            <select id="template-select" class="template-select">
+              <option value="">Insert template...</option>
+              <option value="callout">Callout box</option>
+              <option value="two-column">Two columns</option>
+              <option value="event-card">Event card</option>
+            </select>
+            <button type="button" class="btn" id="insert-template">Insert</button>
           </div>
-          <span class="badge" id="dirty-badge">Clean</span>
         </div>
-
-        <div class="toolbar">
-          <button type="button" class="btn" id="reload" disabled>Reload</button>
-          <label class="upload-label">
-            Upload image
-            <input id="upload" type="file" accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml" disabled />
-          </label>
-          <span class="muted" id="upload-status"></span>
-        </div>
-
-        <textarea id="editor" spellcheck="false" disabled aria-label="HTML editor"></textarea>
+        <div class="status" id="status">Connect to the test Worker to begin.</div>
+        <iframe class="canvas" id="canvas" title="Editor canvas" sandbox="allow-same-origin"></iframe>
       </section>
     </main>
-
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <input type="file" id="image-input" accept="image/*" hidden />
 
     <script src="./config.js"></script>
-    <script src="./app.js"></script>
+    <script src="./app.js" type="module"></script>
   </body>
 </html>
