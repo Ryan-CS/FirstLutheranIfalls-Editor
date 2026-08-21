@@ -12,7 +12,7 @@ The paired repository, `FirstLutheranIfalls-Website`, contains the canonical dep
 - **RyskStick is retired.** There is no production Linux host, systemd service, Cloudflare Tunnel, Cloudflare Access, or Basic Auth in the current path. Do not assume any of that infrastructure exists unless explicitly reintroduced.
 - The editor frontend (`index.html`, `admin/`) is deployed by GitHub Pages from this repository's branch root at `admin.firstlutheranifalls.site`.
 - The editor backend is a Cloudflare Worker (`worker/`), deployed separately via `npx wrangler deploy`, reachable at `firstlutheranifalls-editor.ryan-skogstad.workers.dev`.
-- `server/` (the earlier Node server that read/wrote a local `WEBSITE_ROOT` checkout) is legacy code, retained for reference and still covered by `tests/publish.test.mjs` and `tests/server-smoke.test.mjs`. It is not deployed.
+- The earlier Node server that read/wrote a local `WEBSITE_ROOT` checkout (`server/`) has been removed, along with its dedicated tests. `docs/PUBLISHING.md`, `docs/BACKUPS.md`, and `docs/AUDIT_LOG.md` document that retired design for historical reference only.
 
 ## Architecture
 
@@ -36,7 +36,7 @@ Do not add force-push behavior to `publish`, and do not let `discard` touch any 
 
 - Never commit credentials, tokens, or `.dev.vars` to either repository. `worker/.dev.vars` is git-ignored; only `worker/.dev.vars.example` is tracked.
 - Keep editor implementation and public website content in their separate repositories.
-- Use small, reversible changes. Run `npm test` and `npm run lint` for changes to `server/`, `admin/`, or tests; there is currently no automated test coverage for `worker/src/index.js`, so verify Worker changes against `docs/WORKER-MIGRATION-TEST.md`'s test checklist.
+- Use small, reversible changes. Run `npm test` and `npm run lint` for changes to `admin/` or tests; there is currently no automated test coverage for `worker/src/index.js`, so verify Worker changes against `docs/WORKER-MIGRATION-TEST.md`'s test checklist.
 - The Worker's editable-page and upload-path allowlists (in `worker/src/index.js`) are the actual security boundary, not CORS. Do not loosen `validatePagePath`, the upload MIME/size limits, or `ALLOWED_ORIGINS` without a specific reason.
 
 ## Recovery

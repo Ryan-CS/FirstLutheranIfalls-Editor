@@ -1,5 +1,12 @@
 # Decisions
 
+## 2026-08-21: Removed The Legacy Local Node Server
+
+- Removed `server/` (`dev.mjs`, `publish.mjs`) and its dedicated tests (`tests/publish.test.mjs`, `tests/server-smoke.test.mjs`). That code implemented the retired RyskStick/`WEBSITE_ROOT` design described in the entry below and was not part of the deployed architecture; keeping it around as passing, unused code was misleading.
+- `docs/PUBLISHING.md`, `docs/BACKUPS.md`, and `docs/AUDIT_LOG.md` still describe that removed server. They are kept as historical/recovery reference only — they no longer correspond to any code in this repository.
+- Removed the root `npm run dev` script (it invoked `server/dev.mjs`), and dropped the now-unused `public/_backups/` and `logs/` entries from `.gitignore`.
+- `tests/smoke.test.mjs`'s required-folder check now checks for `worker/` instead of `server/`.
+
 ## 2026-08-21: RyskStick Retired; GitHub Pages + Cloudflare Worker Is The Current Architecture
 
 - `RyskStick` is retired as a production target. There is no local Node server, `WEBSITE_ROOT` checkout, systemd service, Cloudflare Tunnel, Cloudflare Access, or Basic Auth in the current deployment.

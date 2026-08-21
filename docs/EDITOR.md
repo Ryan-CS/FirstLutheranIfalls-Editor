@@ -25,6 +25,6 @@ Save Draft commits the page to the `editor-test-draft` branch via the GitHub Con
 
 Full endpoint list, Cloudflare setup, DNS, and a manual test checklist: `docs/WORKER-MIGRATION-TEST.md`.
 
-## Legacy local server
+## Legacy local server (removed)
 
-An earlier design ran a Node server (`server/`) against a local `WEBSITE_ROOT` checkout on a Linux host (`RyskStick`), with its own save/backup/publish flow. That host and workflow are retired. The code remains in `server/` and is still covered by `tests/publish.test.mjs` and `tests/server-smoke.test.mjs`, but it is not part of the current deployment. `docs/PUBLISHING.md`, `docs/BACKUPS.md`, and `docs/AUDIT_LOG.md` describe that legacy server, not the current Worker.
+An earlier design ran a Node server against a local `WEBSITE_ROOT` checkout on a Linux host (`RyskStick`), with its own save/backup/publish flow. That host and workflow are retired, and the server code and its dedicated tests have been removed from the repository. `docs/PUBLISHING.md`, `docs/BACKUPS.md`, and `docs/AUDIT_LOG.md` still describe that legacy server, kept only as historical reference — not the current Worker.

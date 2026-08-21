@@ -8,7 +8,6 @@
   },
   "scripts": {
     "test": "node --test",
-    "dev": "node server/dev.mjs",
     "format": "prettier . --write",
     "lint": "eslint ."
   },

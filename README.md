@@ -37,9 +37,9 @@ These are Worker operations against GitHub, not local filesystem operations:
 
 A successful publish triggers the website's GitHub Pages workflow, so it is followed by an actual deployment to `firstlutheranifalls.site`.
 
-## Legacy: local Node server
+## Legacy: local Node server (removed)
 
-`server/`, `tests/publish.test.mjs`, `tests/server-smoke.test.mjs`, and `docs/PUBLISHING.md`, `docs/BACKUPS.md`, `docs/AUDIT_LOG.md`, `docs/FONTS.md` describe an earlier design: a Node server on a Linux host (`RyskStick`) editing a `WEBSITE_ROOT` checkout on disk and pushing to it with local Git. That host and workflow are retired and are not part of the current deployment. That code and its docs remain in the repository for historical/recovery reference and because `npm test` still exercises it; treat `docs/WORKER-MIGRATION-TEST.md` as authoritative for how the editor actually works today.
+An earlier design ran a Node server on a Linux host (`RyskStick`), editing a `WEBSITE_ROOT` checkout on disk and pushing to it with local Git. That host and workflow are retired; the server code (`server/`) and its dedicated tests have been removed from the repository. `docs/PUBLISHING.md`, `docs/BACKUPS.md`, and `docs/AUDIT_LOG.md` still describe that design and are kept only as historical/recovery reference — see `docs/DECISIONS.md`. Treat `docs/WORKER-MIGRATION-TEST.md` as authoritative for how the editor actually works today.
 
 ## Development Checks
 
@@ -49,6 +49,6 @@ npm test
 npm run lint
 ```
 
-`npm test` currently only covers the legacy local server in `server/`; there is no automated test suite for `worker/src/index.js` yet.
+There is no automated test suite for `worker/src/index.js` yet; `npm test` currently covers only the editor frontend's folder-structure smoke check.
 
 See `docs/EDITOR.md` and `docs/STAFF_GUIDE.md` for current operating guidance, and `docs/DECISIONS.md` for the migration history. Recovery requires both repositories, not this Editor repository alone.
