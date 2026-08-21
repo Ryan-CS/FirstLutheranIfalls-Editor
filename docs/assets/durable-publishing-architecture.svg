@@ -1,82 +1,105 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="980" viewBox="0 0 1400 980" role="img" aria-labelledby="title desc">
-  <title id="title">First Lutheran durable publishing architecture</title>
-  <desc id="desc">A flowchart showing staff editing through a constrained trusted publishing service into versioned canonical storage with separate unpublished and published states, followed by static public delivery to visitors. Current providers are shown as secondary labels.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" role="img" aria-labelledby="title desc">
+  <title id="title">First Lutheran durable publishing architecture: two paths, one source of truth</title>
+  <desc id="desc">The privileged staff path runs from a staff browser through the admin domain and static editor to a constrained trusted publishing service, which alone holds the repository write credential and writes unpublished state in versioned canonical storage. Safe explicit publication advances unpublished state to published state. Separately, the unprivileged public path runs from a visitor browser through the public domain to a static public host that receives only published files. Visitors never pass through the trusted publishing service. Current 2026 provider names are secondary labels.</desc>
   <defs>
     <style>
-      .bg{fill:#f7f4ec}.panel{fill:#fffdf8;stroke:#cfc8ba;stroke-width:2}.core{fill:#edf4ef;stroke:#476b57;stroke-width:3}.guard{fill:#f5edf3;stroke:#7b556f;stroke-width:3}.impl{fill:#fff7e8;stroke:#b7864e;stroke-width:2}.title{font:700 34px Georgia,serif;fill:#203027}.sub{font:400 18px Arial,sans-serif;fill:#5b675f}.label{font:700 22px Arial,sans-serif;fill:#26372d}.small{font:400 16px Arial,sans-serif;fill:#59655e}.tiny{font:700 14px Arial,sans-serif;fill:#9a692f}.guardText{font:700 14px Arial,sans-serif;fill:#7b556f}.section{font:700 15px Arial,sans-serif;letter-spacing:2px;fill:#737d77}.arrow{stroke:#66736b;stroke-width:4;fill:none}.arrowGuard{stroke:#7b556f;stroke-width:4;fill:none}
+      .bg{fill:#f7f4ec}.lane{fill:#fffdf8;stroke:#d6cfc2;stroke-width:2}.core{fill:#edf4ef;stroke:#476b57;stroke-width:3}.guard{fill:#f5edf3;stroke:#7b556f;stroke-width:3}.impl{fill:#fff7e8;stroke:#b7864e;stroke-width:2}.neutral{fill:#fffdf8;stroke:#8d998f;stroke-width:2}.title{font:700 34px Georgia,serif;fill:#203027}.subtitle{font:400 18px Arial,sans-serif;fill:#5b675f}.laneTitle{font:700 16px Arial,sans-serif;letter-spacing:2px;fill:#66736b}.label{font:700 21px Arial,sans-serif;fill:#26372d}.small{font:400 16px Arial,sans-serif;fill:#59655e}.tiny{font:700 14px Arial,sans-serif;fill:#95662f}.guardText{font:700 14px Arial,sans-serif;fill:#7b556f}.note{font:700 15px Arial,sans-serif;fill:#46544b}.arrow{stroke:#66736b;stroke-width:4;fill:none}.arrowGuard{stroke:#7b556f;stroke-width:4;fill:none}.arrowRead{stroke:#476b57;stroke-width:4;fill:none}.dash{stroke-dasharray:9 8}
     </style>
     <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#66736b"/></marker>
     <marker id="arrowGuard" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#7b556f"/></marker>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#000" flood-opacity="0.10"/></filter>
+    <marker id="arrowRead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#476b57"/></marker>
   </defs>
 
-  <rect class="bg" width="1400" height="980"/>
-  <text class="title" x="700" y="55" text-anchor="middle">First Lutheran Durable Publishing Architecture</text>
-  <text class="sub" x="700" y="87" text-anchor="middle">Preserve the roles and safety boundaries; providers can be replaced over time.</text>
+  <rect class="bg" width="1600" height="1120"/>
+  <text class="title" x="800" y="50" text-anchor="middle">First Lutheran Durable Publishing Architecture</text>
+  <text class="subtitle" x="800" y="82" text-anchor="middle">Two independent access paths share one versioned source of truth. Preserve the roles and safety boundaries; providers may change.</text>
 
-  <text class="section" x="700" y="135" text-anchor="middle">STAFF / PRIVILEGED PATH</text>
+  <circle cx="420" cy="116" r="8" fill="#476b57"/><text class="small" x="437" y="122">durable role</text>
+  <circle cx="580" cy="116" r="8" fill="#7b556f"/><text class="small" x="597" y="122">privileged / safety boundary</text>
+  <circle cx="835" cy="116" r="8" fill="#b7864e"/><text class="small" x="852" y="122">current 2026 implementation</text>
 
-  <g filter="url(#shadow)">
-    <rect class="core" x="435" y="165" rx="26" width="530" height="105"/>
-    <text class="label" x="700" y="203" text-anchor="middle">Staff editing interface</text>
-    <text class="small" x="700" y="232" text-anchor="middle">Human-friendly editing and preview of website content</text>
-    <text class="tiny" x="700" y="256" text-anchor="middle">Today: GitHub Pages · admin.firstlutheranifalls.site</text>
-  </g>
+  <rect class="lane" x="55" y="150" rx="28" width="690" height="620"/>
+  <rect class="lane" x="855" y="150" rx="28" width="690" height="620"/>
+  <text class="laneTitle" x="400" y="185" text-anchor="middle">STAFF / PRIVILEGED PATH</text>
+  <text class="laneTitle" x="1200" y="185" text-anchor="middle">PUBLIC / UNPRIVILEGED PATH</text>
 
-  <path class="arrowGuard" d="M700 270 L700 335" marker-end="url(#arrowGuard)"/>
-  <text class="guardText" x="725" y="311">authenticated web request</text>
+  <!-- Staff path -->
+  <rect class="neutral" x="155" y="215" rx="20" width="490" height="68"/>
+  <text class="label" x="400" y="246" text-anchor="middle">Staff browser</text>
+  <text class="small" x="400" y="268" text-anchor="middle">Untrusted client: anything sent here can be inspected or changed</text>
 
-  <g filter="url(#shadow)">
-    <rect class="guard" x="380" y="345" rx="26" width="640" height="135"/>
-    <text class="label" x="700" y="385" text-anchor="middle">Constrained trusted publishing service</text>
-    <text class="small" x="700" y="416" text-anchor="middle">Holds privileged credentials and enforces exactly what may be changed</text>
-    <text class="guardText" x="700" y="444" text-anchor="middle">Repository write credential stays here — never in the browser</text>
-    <text class="tiny" x="700" y="466" text-anchor="middle">Today: Cloudflare Worker + fine-grained GitHub credential</text>
-  </g>
+  <path class="arrow" d="M400 283 L400 318" marker-end="url(#arrow)"/>
+  <rect class="core" x="155" y="328" rx="20" width="490" height="76"/>
+  <text class="label" x="400" y="357" text-anchor="middle">Admin domain-name routing</text>
+  <text class="tiny" x="400" y="383" text-anchor="middle">Today: admin.firstlutheranifalls.site</text>
 
-  <path class="arrow" d="M700 480 L700 540" marker-end="url(#arrow)"/>
-  <text class="small" x="728" y="519">narrow, validated repository operations</text>
+  <path class="arrow" d="M400 404 L400 438" marker-end="url(#arrow)"/>
+  <rect class="core" x="155" y="448" rx="22" width="490" height="92"/>
+  <text class="label" x="400" y="480" text-anchor="middle">Static editor interface</text>
+  <text class="small" x="400" y="505" text-anchor="middle">Human-friendly editing, preview and navigation</text>
+  <text class="tiny" x="400" y="526" text-anchor="middle">Today: GitHub Pages · Editor repository</text>
 
-  <g filter="url(#shadow)">
-    <rect class="core" x="270" y="550" rx="30" width="860" height="205"/>
-    <text class="label" x="700" y="592" text-anchor="middle">Versioned canonical storage</text>
-    <text class="small" x="700" y="621" text-anchor="middle">The authoritative website files plus their recoverable change history</text>
-    <text class="tiny" x="700" y="647" text-anchor="middle">Today: FirstLutheranIfalls-Website repository on GitHub</text>
+  <path class="arrowGuard" d="M400 540 L400 581" marker-end="url(#arrowGuard)"/>
+  <text class="guardText" x="420" y="570">authenticated encrypted request</text>
 
-    <rect class="panel" x="325" y="674" rx="18" width="300" height="56"/>
-    <text class="label" style="font-size:18px" x="475" y="697" text-anchor="middle">Unpublished state</text>
-    <text class="small" style="font-size:14px" x="475" y="718" text-anchor="middle">editor-test-draft</text>
+  <rect class="guard" x="115" y="591" rx="24" width="570" height="142"/>
+  <text class="label" x="400" y="625" text-anchor="middle">Constrained trusted publishing service</text>
+  <text class="small" x="400" y="653" text-anchor="middle">Enforces repository, branch, path, file-type and operation limits</text>
+  <text class="guardText" x="400" y="681" text-anchor="middle">Privileged repository write credential exists HERE ONLY</text>
+  <text class="tiny" x="400" y="710" text-anchor="middle">Today: Cloudflare Worker · firstlutheranifalls-editor</text>
 
-    <rect class="panel" x="775" y="674" rx="18" width="300" height="56"/>
-    <text class="label" style="font-size:18px" x="925" y="697" text-anchor="middle">Published state</text>
-    <text class="small" style="font-size:14px" x="925" y="718" text-anchor="middle">migration/github-pages-worker-test</text>
+  <!-- Public path -->
+  <rect class="neutral" x="955" y="215" rx="20" width="490" height="68"/>
+  <text class="label" x="1200" y="246" text-anchor="middle">Visitor browser</text>
+  <text class="small" x="1200" y="268" text-anchor="middle">Reads public content; receives no publishing credential</text>
 
-    <path class="arrowGuard" d="M625 702 L775 702" marker-end="url(#arrowGuard)"/>
-    <text class="guardText" x="700" y="685" text-anchor="middle">EXPLICIT SAFE PUBLISH</text>
-  </g>
+  <path class="arrow" d="M1200 283 L1200 318" marker-end="url(#arrow)"/>
+  <rect class="core" x="955" y="328" rx="20" width="490" height="76"/>
+  <text class="label" x="1200" y="357" text-anchor="middle">Public domain-name routing</text>
+  <text class="tiny" x="1200" y="383" text-anchor="middle">Today: firstlutheranifalls.site</text>
 
-  <path class="arrow" d="M925 755 L925 815" marker-end="url(#arrow)"/>
+  <path class="arrow" d="M1200 404 L1200 438" marker-end="url(#arrow)"/>
+  <rect class="core" x="955" y="448" rx="22" width="490" height="104"/>
+  <text class="label" x="1200" y="480" text-anchor="middle">Static public file host</text>
+  <text class="small" x="1200" y="505" text-anchor="middle">Serves already-published website files</text>
+  <text class="small" x="1200" y="528" text-anchor="middle">No content database or publishing credential is required here</text>
+  <text class="tiny" x="1200" y="548" text-anchor="middle">Today: GitHub Pages · Website repository</text>
 
-  <g filter="url(#shadow)">
-    <rect class="core" x="680" y="825" rx="24" width="490" height="95"/>
-    <text class="label" x="925" y="861" text-anchor="middle">Static public delivery</text>
-    <text class="small" x="925" y="889" text-anchor="middle">Serves already-published files; no content database required</text>
-    <text class="tiny" x="925" y="911" text-anchor="middle">Today: GitHub Pages · firstlutheranifalls.site</text>
-  </g>
+  <rect class="impl" x="955" y="594" rx="20" width="490" height="116"/>
+  <text class="label" style="font-size:18px" x="1200" y="626" text-anchor="middle">Optional public-data helper</text>
+  <text class="small" x="1200" y="652" text-anchor="middle">May supply non-secret dynamic data; not part of publishing trust</text>
+  <text class="tiny" x="1200" y="679" text-anchor="middle">Today: separate Website Worker for public YouTube RSS</text>
+  <text class="small" style="font-size:14px" x="1200" y="699" text-anchor="middle">It has no repository publishing credential.</text>
+  <path class="arrowRead dash" d="M1200 552 L1200 594" marker-end="url(#arrowRead)"/>
 
-  <g filter="url(#shadow)">
-    <rect class="impl" x="95" y="810" rx="24" width="470" height="125"/>
-    <text class="label" style="font-size:19px" x="130" y="848">Portable content is the anchor</text>
-    <text class="small" x="130" y="878">HTML, CSS, JavaScript, images and files remain readable</text>
-    <text class="small" x="130" y="902">outside any one product or provider.</text>
-    <text class="tiny" x="130" y="924">If a provider fails: replace its role, preserve the model.</text>
-  </g>
+  <!-- Shared canonical state -->
+  <rect class="core" x="250" y="805" rx="30" width="1100" height="250"/>
+  <text class="label" style="font-size:24px" x="800" y="844" text-anchor="middle">Versioned canonical Website storage — one source of truth</text>
+  <text class="small" x="800" y="872" text-anchor="middle">Ordinary website files plus recoverable change history</text>
+  <text class="tiny" x="800" y="897" text-anchor="middle">Today: Ryan-CS/FirstLutheranIfalls-Website on GitHub</text>
 
-  <text class="section" x="925" y="955" text-anchor="middle">PUBLIC / UNPRIVILEGED PATH</text>
+  <rect class="neutral" x="350" y="925" rx="18" width="350" height="82"/>
+  <text class="label" style="font-size:19px" x="525" y="955" text-anchor="middle">Unpublished state</text>
+  <text class="small" style="font-size:14px" x="525" y="980" text-anchor="middle">Saved staff work; not visible on the public site</text>
+  <text class="tiny" x="525" y="1001" text-anchor="middle">Today: editor-test-draft branch</text>
 
-  <g>
-    <circle cx="95" cy="150" r="9" fill="#476b57"/><text class="small" x="114" y="156">durable role</text>
-    <circle cx="245" cy="150" r="9" fill="#b7864e"/><text class="small" x="264" y="156">current implementation</text>
-    <circle cx="472" cy="150" r="9" fill="#7b556f"/><text class="small" x="491" y="156">safety boundary</text>
-  </g>
+  <rect class="neutral" x="900" y="925" rx="18" width="350" height="82"/>
+  <text class="label" style="font-size:19px" x="1075" y="955" text-anchor="middle">Published state</text>
+  <text class="small" style="font-size:14px" x="1075" y="980" text-anchor="middle">Only this state may feed public static delivery</text>
+  <text class="tiny" x="1075" y="1001" text-anchor="middle">Today: migration/github-pages-worker-test branch</text>
+
+  <path class="arrowGuard" d="M700 966 L900 966" marker-end="url(#arrowGuard)"/>
+  <text class="guardText" x="800" y="945" text-anchor="middle">EXPLICIT SAFE PUBLISH · NO FORCED OVERWRITE</text>
+
+  <!-- Staff writes into draft -->
+  <path class="arrowGuard" d="M400 733 C400 770 450 790 525 925" marker-end="url(#arrowGuard)"/>
+  <text class="guardText" x="330" y="784">validated save/read/upload operations</text>
+
+  <!-- Published state feeds public host, separate from visitor request path -->
+  <path class="arrowRead" d="M1075 925 C1075 835 1400 825 1400 740 L1400 570 C1400 560 1375 552 1348 552" marker-end="url(#arrowRead)"/>
+  <text class="note" x="1215" y="792">published files / deployment source</text>
+
+  <!-- Core invariant callout -->
+  <rect class="impl" x="250" y="1070" rx="18" width="1100" height="36"/>
+  <text class="note" x="800" y="1094" text-anchor="middle">Core invariant: visitors never pass through the privileged publishing service. Staff changes reach visitors only after entering versioned unpublished state and an explicit safe publish.</text>
 </svg>
