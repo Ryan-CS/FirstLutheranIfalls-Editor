@@ -43,4 +43,4 @@ See `docs/EDITOR.md`, `docs/BACKUPS.md`, and `docs/STAFF_GUIDE.md` for operating
 
 ## Migration test
 
-The `migration/github-pages-worker-test` branch is also used to test the serverless editor architecture at `admin.firstlutheranifalls.site`. For that test, GitHub Pages should deploy the migration branch from `/(root)`, where `index.html`, `app.js`, `styles.css`, `config.js`, `CNAME`, and `.nojekyll` form the Pages frontend. The `docs/` directory remains documentation only.
+The `migration/github-pages-worker-test` branch is also used to test the serverless editor architecture at `admin.firstlutheranifalls.site`. For that test, GitHub Pages should deploy the migration branch from `/(root)`. Root `index.html` loads the existing browser-editor assets from `admin/`; root `CNAME` and `.nojekyll` support the Pages custom-domain deployment. The `docs/` directory remains documentation only.
