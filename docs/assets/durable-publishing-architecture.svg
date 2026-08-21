@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="980" viewBox="0 0 1400 980" role="img" aria-labelledby="title desc">
+  <title id="title">First Lutheran durable publishing architecture</title>
+  <desc id="desc">A flowchart showing staff editing through a constrained trusted publishing service into versioned canonical storage with separate unpublished and published states, followed by static public delivery to visitors. Current providers are shown as secondary labels.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f7f4ec}.panel{fill:#fffdf8;stroke:#cfc8ba;stroke-width:2}.core{fill:#edf4ef;stroke:#476b57;stroke-width:3}.guard{fill:#f5edf3;stroke:#7b556f;stroke-width:3}.impl{fill:#fff7e8;stroke:#b7864e;stroke-width:2}.title{font:700 34px Georgia,serif;fill:#203027}.sub{font:400 18px Arial,sans-serif;fill:#5b675f}.label{font:700 22px Arial,sans-serif;fill:#26372d}.small{font:400 16px Arial,sans-serif;fill:#59655e}.tiny{font:700 14px Arial,sans-serif;fill:#9a692f}.guardText{font:700 14px Arial,sans-serif;fill:#7b556f}.section{font:700 15px Arial,sans-serif;letter-spacing:2px;fill:#737d77}.arrow{stroke:#66736b;stroke-width:4;fill:none}.arrowGuard{stroke:#7b556f;stroke-width:4;fill:none}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#66736b"/></marker>
+    <marker id="arrowGuard" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#7b556f"/></marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#000" flood-opacity="0.10"/></filter>
+  </defs>
+
+  <rect class="bg" width="1400" height="980"/>
+  <text class="title" x="700" y="55" text-anchor="middle">First Lutheran Durable Publishing Architecture</text>
+  <text class="sub" x="700" y="87" text-anchor="middle">Preserve the roles and safety boundaries; providers can be replaced over time.</text>
+
+  <text class="section" x="700" y="135" text-anchor="middle">STAFF / PRIVILEGED PATH</text>
+
+  <g filter="url(#shadow)">
+    <rect class="core" x="435" y="165" rx="26" width="530" height="105"/>
+    <text class="label" x="700" y="203" text-anchor="middle">Staff editing interface</text>
+    <text class="small" x="700" y="232" text-anchor="middle">Human-friendly editing and preview of website content</text>
+    <text class="tiny" x="700" y="256" text-anchor="middle">Today: GitHub Pages · admin.firstlutheranifalls.site</text>
+  </g>
+
+  <path class="arrowGuard" d="M700 270 L700 335" marker-end="url(#arrowGuard)"/>
+  <text class="guardText" x="725" y="311">authenticated web request</text>
+
+  <g filter="url(#shadow)">
+    <rect class="guard" x="380" y="345" rx="26" width="640" height="135"/>
+    <text class="label" x="700" y="385" text-anchor="middle">Constrained trusted publishing service</text>
+    <text class="small" x="700" y="416" text-anchor="middle">Holds privileged credentials and enforces exactly what may be changed</text>
+    <text class="guardText" x="700" y="444" text-anchor="middle">Repository write credential stays here — never in the browser</text>
+    <text class="tiny" x="700" y="466" text-anchor="middle">Today: Cloudflare Worker + fine-grained GitHub credential</text>
+  </g>
+
+  <path class="arrow" d="M700 480 L700 540" marker-end="url(#arrow)"/>
+  <text class="small" x="728" y="519">narrow, validated repository operations</text>
+
+  <g filter="url(#shadow)">
+    <rect class="core" x="270" y="550" rx="30" width="860" height="205"/>
+    <text class="label" x="700" y="592" text-anchor="middle">Versioned canonical storage</text>
+    <text class="small" x="700" y="621" text-anchor="middle">The authoritative website files plus their recoverable change history</text>
+    <text class="tiny" x="700" y="647" text-anchor="middle">Today: FirstLutheranIfalls-Website repository on GitHub</text>
+
+    <rect class="panel" x="325" y="674" rx="18" width="300" height="56"/>
+    <text class="label" style="font-size:18px" x="475" y="697" text-anchor="middle">Unpublished state</text>
+    <text class="small" style="font-size:14px" x="475" y="718" text-anchor="middle">editor-test-draft</text>
+
+    <rect class="panel" x="775" y="674" rx="18" width="300" height="56"/>
+    <text class="label" style="font-size:18px" x="925" y="697" text-anchor="middle">Published state</text>
+    <text class="small" style="font-size:14px" x="925" y="718" text-anchor="middle">migration/github-pages-worker-test</text>
+
+    <path class="arrowGuard" d="M625 702 L775 702" marker-end="url(#arrowGuard)"/>
+    <text class="guardText" x="700" y="685" text-anchor="middle">EXPLICIT SAFE PUBLISH</text>
+  </g>
+
+  <path class="arrow" d="M925 755 L925 815" marker-end="url(#arrow)"/>
+
+  <g filter="url(#shadow)">
+    <rect class="core" x="680" y="825" rx="24" width="490" height="95"/>
+    <text class="label" x="925" y="861" text-anchor="middle">Static public delivery</text>
+    <text class="small" x="925" y="889" text-anchor="middle">Serves already-published files; no content database required</text>
+    <text class="tiny" x="925" y="911" text-anchor="middle">Today: GitHub Pages · firstlutheranifalls.site</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="impl" x="95" y="810" rx="24" width="470" height="125"/>
+    <text class="label" style="font-size:19px" x="130" y="848">Portable content is the anchor</text>
+    <text class="small" x="130" y="878">HTML, CSS, JavaScript, images and files remain readable</text>
+    <text class="small" x="130" y="902">outside any one product or provider.</text>
+    <text class="tiny" x="130" y="924">If a provider fails: replace its role, preserve the model.</text>
+  </g>
+
+  <text class="section" x="925" y="955" text-anchor="middle">PUBLIC / UNPRIVILEGED PATH</text>
+
+  <g>
+    <circle cx="95" cy="150" r="9" fill="#476b57"/><text class="small" x="114" y="156">durable role</text>
+    <circle cx="245" cy="150" r="9" fill="#b7864e"/><text class="small" x="264" y="156">current implementation</text>
+    <circle cx="472" cy="150" r="9" fill="#7b556f"/><text class="small" x="491" y="156">safety boundary</text>
+  </g>
+</svg>
