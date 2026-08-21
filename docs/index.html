@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>First Lutheran Editor - Migration Test</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand__title">First Lutheran Editor</span>
+        <span class="brand__subtitle">Migration test: GitHub Pages frontend → Cloudflare Worker → GitHub test branch</span>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" id="open-live">Open Test Site</button>
+        <button type="button" class="btn btn--primary" id="save" disabled>Save Draft</button>
+        <button type="button" class="btn" id="publish" disabled>Publish Test Branch</button>
+        <button type="button" class="btn" id="discard" disabled>Discard Draft</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <section class="panel">
+          <h2>Connection</h2>
+          <label for="editor-token">Editor API token</label>
+          <input id="editor-token" type="password" autocomplete="off" placeholder="Paste temporary test token" />
+          <button type="button" class="btn btn--primary" id="connect">Connect</button>
+          <p class="muted" id="connection-status">Not connected.</p>
+        </section>
+
+        <section class="panel">
+          <h2>Pages</h2>
+          <button type="button" class="btn" id="refresh-pages" disabled>Refresh pages</button>
+          <select id="page-list" size="12" disabled aria-label="Editable pages"></select>
+        </section>
+
+        <section class="panel">
+          <h2>Draft status</h2>
+          <pre id="draft-status">Connect to load status.</pre>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <div class="workspace__header">
+          <div>
+            <h1 id="page-title">No page selected</h1>
+            <p class="muted" id="page-path"></p>
+          </div>
+          <span class="badge" id="dirty-badge">Clean</span>
+        </div>
+
+        <div class="toolbar">
+          <button type="button" class="btn" id="reload" disabled>Reload</button>
+          <label class="upload-label">
+            Upload image
+            <input id="upload" type="file" accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml" disabled />
+          </label>
+          <span class="muted" id="upload-status"></span>
+        </div>
+
+        <textarea id="editor" spellcheck="false" disabled aria-label="HTML editor"></textarea>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./config.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
