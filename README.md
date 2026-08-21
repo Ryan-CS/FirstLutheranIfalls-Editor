@@ -1,35 +1,45 @@
 # First Lutheran Editor
 
-This repository is the operational editor application for First Lutheran Church. It contains the browser editor, Node server, tests, and operational documentation.
+This repository is the editor application for First Lutheran Church: the browser editor UI and its Cloudflare Worker API. The canonical public content is kept separately in [FirstLutheranIfalls-Website](https://github.com/Ryan-CS/FirstLutheranIfalls-Website).
 
-The canonical public content is kept separately in [FirstLutheranIfalls-Website](https://github.com/Ryan-CS/FirstLutheranIfalls-Website). That repository contains the HTML, assets, files, posts, uploads, and `robots.txt` that will be deployed through Cloudflare Pages.
+**`migration/github-pages-worker-test` is the active branch in both repositories** (it is `origin/HEAD` in each) despite its name. It is not a side experiment — it is where the editor and website currently run. `main` and the RyskStick-hosted Node server it describes are retired.
 
-## Target Architecture
+## Current Architecture
 
 ```text
-Administrator -> Cloudflare Access/MFA -> Cloudflare Tunnel -> RyskStick:8787
-Editor -> WEBSITE_ROOT -> Website checkout -> GitHub -> Cloudflare Pages -> Public website
+Staff browser
+      |
+      v
+GitHub Pages (this repo, branch root) -> admin.firstlutheranifalls.site
+      |
+      | HTTPS + Bearer editor token
+      v
+Cloudflare Worker (worker/)  -> firstlutheranifalls-editor.ryan-skogstad.workers.dev
+      |
+      | GITHUB_TOKEN held only as a Worker secret
+      v
+GitHub API -> Ryan-CS/FirstLutheranIfalls-Website
+      |- migration/github-pages-worker-test   (published test site, deployed by GitHub Pages)
+      `- editor-test-draft                    (unpublished editor saves)
 ```
 
-The production target is the Linux host `RyskStick`. The editor runtime listens on port `8787`. After Cloudflare Pages is live, the public website must remain available even when RyskStick is offline.
+There is no server to run, no `WEBSITE_ROOT` checkout, and no RyskStick host in this path. The Worker talks to the GitHub Contents/Git API directly; GitHub Pages deploys the website branch on push. See `docs/WORKER-MIGRATION-TEST.md` for the full setup, deployment, and verification steps — it is the current source of truth for how this system runs.
 
-`admin.firstlutheranifalls.org` is the intended admin hostname. It will ultimately reach the editor through Cloudflare Access/MFA and Cloudflare Tunnel. Existing HTTP Basic Auth remains an additional control during the initial migration.
+The website repository's own `docs/GITHUB-PAGES-WORKER-TEST.md` documents the matching public-site side (GitHub Pages for `firstlutheranifalls.site` plus its own public Cloudflare Worker for the YouTube API).
 
-## Local Content Root
+## Save, Publish, Discard
 
-The server operates on an external website directory supplied by `WEBSITE_ROOT`:
+These are Worker operations against GitHub, not local filesystem operations:
 
-```sh
-WEBSITE_ROOT=/opt/firstlutheran/website npm run dev
-```
+- **Save Draft** commits a page or upload straight to the `editor-test-draft` branch via the GitHub Contents API.
+- **Publish Test Branch** fast-forwards `migration/github-pages-worker-test` to the draft commit, only if the draft is a clean, undiverged ahead-of-target history. It never force-pushes or auto-merges.
+- **Discard Draft** force-resets only `editor-test-draft` back to the current published branch, behind an explicit confirmation.
 
-When `WEBSITE_ROOT` is not set, the server uses `public/` as a development fallback. The production migration must set `WEBSITE_ROOT` explicitly. `/opt/firstlutheran/site` remains the current running rollback copy and must not be changed during this migration phase.
+A successful publish triggers the website's GitHub Pages workflow, so it is followed by an actual deployment to `firstlutheranifalls.site`.
 
-## Save And Publish
+## Legacy: local Node server (removed)
 
-Saving writes changes, uploads, and backups to the local Website checkout. Saving does not publish a website.
-
-**Publish to Website GitHub** is a deliberate Git operation. It reviews and stages only allowed Website-content paths, creates a local commit, and pushes it to Website `origin/main` without force. It does not configure or trigger Cloudflare Pages, so a successful push is not yet public deployment. See `docs/PUBLISHING.md` for staging and retry rules.
+An earlier design ran a Node server on a Linux host (`RyskStick`), editing a `WEBSITE_ROOT` checkout on disk and pushing to it with local Git. That host and workflow are retired; the server code (`server/`) and its dedicated tests have been removed from the repository. `docs/PUBLISHING.md`, `docs/BACKUPS.md`, and `docs/AUDIT_LOG.md` still describe that design and are kept only as historical/recovery reference — see `docs/DECISIONS.md`. Treat `docs/WORKER-MIGRATION-TEST.md` as authoritative for how the editor actually works today.
 
 ## Development Checks
 
@@ -39,8 +49,6 @@ npm test
 npm run lint
 ```
 
-See `docs/EDITOR.md`, `docs/BACKUPS.md`, and `docs/STAFF_GUIDE.md` for operating guidance. Recovery requires both repositories, not this Editor repository alone.
+There is no automated test suite for `worker/src/index.js` yet; `npm test` currently covers only the editor frontend's folder-structure smoke check.
 
-## Migration test
-
-The `migration/github-pages-worker-test` branch is also used to test the serverless editor architecture at `admin.firstlutheranifalls.site`. For that test, GitHub Pages should deploy the migration branch from `/(root)`. Root `index.html` loads the existing browser-editor assets from `admin/`; root `CNAME` and `.nojekyll` support the Pages custom-domain deployment. The `docs/` directory remains documentation only.
+See `docs/EDITOR.md` and `docs/STAFF_GUIDE.md` for current operating guidance, and `docs/DECISIONS.md` for the migration history. Recovery requires both repositories, not this Editor repository alone.

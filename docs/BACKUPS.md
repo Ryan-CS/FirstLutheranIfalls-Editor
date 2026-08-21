@@ -1,4 +1,6 @@
-# Backups
+# Backups (Legacy Local Server)
+
+> This document describes the retired Node server, which wrote timestamped local backups on `RyskStick`. That code (`server/`) has been removed from the repository. The current Cloudflare Worker architecture has no separate backup step — every save and publish is a normal Git commit, so GitHub history is the recovery mechanism. See `docs/WORKER-MIGRATION-TEST.md` for the current system; this page is kept only as historical/recovery reference.
 
 Every Save creates a timestamped backup of the prior HTML file inside the external Website checkout:
 

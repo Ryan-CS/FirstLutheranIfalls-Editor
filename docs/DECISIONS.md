@@ -1,5 +1,21 @@
 # Decisions
 
+## 2026-08-21: Removed The Legacy Local Node Server
+
+- Removed `server/` (`dev.mjs`, `publish.mjs`) and its dedicated tests (`tests/publish.test.mjs`, `tests/server-smoke.test.mjs`). That code implemented the retired RyskStick/`WEBSITE_ROOT` design described in the entry below and was not part of the deployed architecture; keeping it around as passing, unused code was misleading.
+- `docs/PUBLISHING.md`, `docs/BACKUPS.md`, and `docs/AUDIT_LOG.md` still describe that removed server. They are kept as historical/recovery reference only — they no longer correspond to any code in this repository.
+- Removed the root `npm run dev` script (it invoked `server/dev.mjs`), and dropped the now-unused `public/_backups/` and `logs/` entries from `.gitignore`.
+- `tests/smoke.test.mjs`'s required-folder check now checks for `worker/` instead of `server/`.
+
+## 2026-08-21: RyskStick Retired; GitHub Pages + Cloudflare Worker Is The Current Architecture
+
+- `RyskStick` is retired as a production target. There is no local Node server, `WEBSITE_ROOT` checkout, systemd service, Cloudflare Tunnel, Cloudflare Access, or Basic Auth in the current deployment.
+- `migration/github-pages-worker-test` is the active branch in both repositories (`origin/HEAD` in each), not a side experiment. `main` is inactive.
+- The editor frontend deploys via GitHub Pages from this repository's branch root to `admin.firstlutheranifalls.site`. The editor backend is the Cloudflare Worker in `worker/`, talking directly to the GitHub Contents/Git API — no local checkout, no local Git commit/push.
+- Save writes a commit to the `editor-test-draft` branch. Publish fast-forwards `migration/github-pages-worker-test` to that commit. Discard force-resets only the draft branch. See `docs/WORKER-MIGRATION-TEST.md` for the authoritative description.
+- `server/`, `tests/publish.test.mjs`, `tests/server-smoke.test.mjs`, and `docs/PUBLISHING.md`, `docs/BACKUPS.md`, `docs/AUDIT_LOG.md` describe the retired local-server design below and in the entries that follow. They are kept for historical/recovery reference, not current operating guidance.
+- The prior entry below ("Repository Boundary And Migration") described the RyskStick target as the still-current production plan; it is superseded by this entry and is retained as historical context only.
+
 ## 2026-08-18: Repository Boundary And Migration
 
 - `FirstLutheranIfalls-Editor` is the editor application repository. It contains the admin UI, Node server, tests, and operational documentation.
