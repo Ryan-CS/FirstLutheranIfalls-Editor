@@ -25,5 +25,5 @@ If you made changes you don't want, click **Discard Draft** to throw away every 
 ## Important Reminders
 
 - Save Draft ≠ Publish. Always publish deliberately when you want a change to go live.
-- There is no separate "backup" step to remember — every save and every publish is a normal Git commit, so anything ever saved or published can be recovered from GitHub history if needed. Ask the technical administrator if you need something restored.
+- There is no separate "backup" step to remember — every save and every publish is a normal Git commit. Anything you've **published** stays in the site's permanent history and can be recovered. A **draft** you save but never publish is not guaranteed recoverable once you Discard it — see the warning above. Ask the technical administrator if you need something restored.
 - This is the `firstlutheranifalls.site` test domain, not `firstlutheranifalls.org`. Confirm with the technical administrator which domain is currently the live production site before treating a change as final.
