@@ -1,4 +1,6 @@
-# Audit Log
+# Audit Log (Legacy Local Server)
+
+> This document describes the retired Node server (`server/`), which wrote a local audit log on `RyskStick`. That host and workflow are no longer deployed. The current Cloudflare Worker has no separate audit log; the GitHub commit history on `editor-test-draft` and `migration/github-pages-worker-test` (with commit messages like `Editor draft: update index.html`) is the audit trail. This page is kept because `server/` and its tests remain in the repository.
 
 The server writes an audit log to `logs/audit.log`.
 

@@ -1,4 +1,6 @@
-# Publishing Website Changes
+# Publishing Website Changes (Legacy Local Server)
+
+> This document describes the retired Node server (`server/`) that ran against a local `WEBSITE_ROOT` checkout on `RyskStick`. That host and workflow are no longer deployed. For how publishing actually works today (a Cloudflare Worker fast-forwarding a GitHub branch), see `docs/WORKER-MIGRATION-TEST.md`. This page is kept because `server/` and its tests remain in the repository.
 
 **Save** writes page, upload, and backup changes locally under `WEBSITE_ROOT`. It does not commit or push.
 
