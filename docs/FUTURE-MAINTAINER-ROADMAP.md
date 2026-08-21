@@ -65,44 +65,9 @@ This does not guarantee a 50-year lifespan. No one can guarantee that. It means 
 
 ## 3. Mental model in one diagram
 
-```text
-                 PUBLIC / UNPRIVILEGED
+![First Lutheran durable publishing architecture](assets/durable-publishing-architecture.svg)
 
-Visitor browser
-      |
-      v
-church domain name
-      |
-      v
-Static public file host
-      |
-      | files come from published Website history
-      v
-Versioned Website file store
-
-
-                 STAFF / PRIVILEGED
-
-Staff browser
-      |
-      v
-admin domain name
-      |
-      v
-Static editor interface
-      |
-      | authenticated encrypted requests
-      v
-Trusted publishing service
-      |
-      | privileged repository credential exists HERE ONLY
-      v
-Versioned Website file store
-      |
-      +--> unpublished state
-      |
-      `--> published state
-```
+The diagram is intentionally concept-first. The durable roles are the important part; the provider names shown inside it are the current 2026 implementation and can be replaced independently.
 
 In the current implementation:
 
@@ -112,6 +77,22 @@ Versioned Website file store   = GitHub repository using Git history
 Trusted publishing service     = Cloudflare Worker
 Unpublished state              = editor-test-draft branch
 Published state                = migration/github-pages-worker-test branch
+```
+
+If the image cannot be rendered in whatever system is being used to read this document, the same architecture can be understood as:
+
+```text
+Staff editing interface
+        |
+        v
+Constrained trusted publishing service
+        |
+        v
+Versioned canonical storage
+        |
+        +---- unpublished state
+        |
+        `---- published state ----> static public delivery ----> visitor
 ```
 
 The trusted publishing service is not hosting the editor and is not hosting the website. Its purpose is to be a **credential and policy boundary** between an untrusted browser and privileged write access to the website's canonical files.
