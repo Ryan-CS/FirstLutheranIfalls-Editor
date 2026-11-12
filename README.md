@@ -10,7 +10,7 @@ This repository is the editor application for First Lutheran Church: the browser
 Staff browser
       |
       v
-GitHub Pages (this repo, branch root) -> admin.firstlutheranifalls.site
+GitHub Pages (this repo, branch root) -> admin.firstlutheranifalls.org
       |
       | HTTPS + Bearer editor token
       v
@@ -25,7 +25,7 @@ GitHub API -> Ryan-CS/FirstLutheranIfalls-Website
 
 There is no server to run, no `WEBSITE_ROOT` checkout, and no RyskStick host in this path. The Worker talks to the GitHub Contents/Git API directly; GitHub Pages deploys the website branch on push. See `docs/WORKER-MIGRATION-TEST.md` for the full setup, deployment, and verification steps — it is the current source of truth for how this system runs.
 
-The website repository's own `docs/GITHUB-PAGES-WORKER-TEST.md` documents the matching public-site side (GitHub Pages for `firstlutheranifalls.site` plus its own public Cloudflare Worker for the YouTube API).
+The website repository's own `docs/GITHUB-PAGES-WORKER-TEST.md` documents the matching public-site side (GitHub Pages for `firstlutheranifalls.org` plus its own public Cloudflare Worker for the YouTube API).
 
 ## Save, Publish, Discard
 
@@ -35,7 +35,7 @@ These are Worker operations against GitHub, not local filesystem operations:
 - **Publish Test Branch** fast-forwards `migration/github-pages-worker-test` to the draft commit, only if the draft is a clean, undiverged ahead-of-target history. It never force-pushes or auto-merges.
 - **Discard Draft** force-resets only `editor-test-draft` back to the current published branch, behind an explicit confirmation.
 
-A successful publish triggers the website's GitHub Pages workflow, so it is followed by an actual deployment to `firstlutheranifalls.site`.
+A successful publish triggers the website's GitHub Pages workflow, so it is followed by an actual deployment to `firstlutheranifalls.org`.
 
 ## Legacy: local Node server (removed)
 
