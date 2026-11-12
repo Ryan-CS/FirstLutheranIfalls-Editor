@@ -6,7 +6,7 @@ const DEFAULT_CONFIG = Object.freeze({
 });
 
 const ALLOWED_ORIGINS = new Set([
-  "https://admin.firstlutheranifalls.site",
+  "https://admin.firstlutheranifalls.org",
   "https://ryan-cs.github.io",
   "http://localhost:8000",
   "http://127.0.0.1:8000",
@@ -430,7 +430,7 @@ export default {
       return json(request, {
         ok: true,
         service: "first-lutheran-editor-api",
-        environment: "firstlutheranifalls.site test",
+        environment: "firstlutheranifalls.org",
         githubConfigured: Boolean(env.GITHUB_TOKEN),
         editorAuthConfigured: Boolean(env.EDITOR_API_TOKEN),
         target: `${cfg.owner}/${cfg.repo}:${cfg.targetBranch}`,

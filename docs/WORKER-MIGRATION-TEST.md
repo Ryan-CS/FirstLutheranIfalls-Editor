@@ -1,11 +1,11 @@
 # Editor migration test: GitHub Pages + Cloudflare Worker
 
-This branch demonstrates the planned serverless editor architecture against the isolated website branch `migration/github-pages-worker-test` and the test domain `firstlutheranifalls.site`. Production `main` and `firstlutheranifalls.org` are not publishing targets.
+This document describes the serverless editor architecture, which publishes to the website branch `migration/github-pages-worker-test` served at `firstlutheranifalls.org`.
 
 ## Architecture
 
 ```text
-admin.firstlutheranifalls.site
+admin.firstlutheranifalls.org
         |
         v
 GitHub Pages (migration branch root)
@@ -75,7 +75,7 @@ The editor only permits top-level HTML page edits through the page endpoint. Upl
 
 **Publish Test Branch** checks that the draft is strictly ahead of the test branch with no divergence, then performs a non-force fast-forward of `migration/github-pages-worker-test` to the draft commit. If the target branch advanced independently, publishing is blocked instead of auto-merging.
 
-The website GitHub Pages workflow is triggered when the migration test branch advances, so a successful publish is followed by a Pages deployment to `firstlutheranifalls.site`.
+The website GitHub Pages workflow is triggered when the migration test branch advances, so a successful publish is followed by a Pages deployment to `firstlutheranifalls.org`.
 
 **Discard Draft** force-resets only `editor-test-draft` to the current test branch after an explicit confirmation. It never resets production `main`.
 
@@ -85,7 +85,7 @@ Repository Settings → Pages should use **Deploy from a branch** with:
 
 - Branch: `migration/github-pages-worker-test`
 - Folder: `/(root)`
-- Custom domain: `admin.firstlutheranifalls.site`
+- Custom domain: `admin.firstlutheranifalls.org`
 
 The migration branch root contains `index.html`, `CNAME`, and `.nojekyll`. The root page loads the editor's existing `admin/styles.css`, `admin/config.js`, and `admin/app.js`, so the `admin/` directory remains the canonical browser-editor asset location. The `docs/` directory remains documentation only. The previous custom Pages Actions workflow has been removed from this migration branch.
 
@@ -97,13 +97,13 @@ The repository may need to be public, or the GitHub account must support Pages f
 2. Add `GITHUB_TOKEN` and `EDITOR_API_TOKEN` as runtime Worker secrets.
 3. Confirm `https://firstlutheranifalls-editor.ryan-skogstad.workers.dev/api/health` reports both Worker secrets configured.
 4. Configure GitHub Pages to deploy `migration/github-pages-worker-test` from `/(root)`.
-5. Open `https://admin.firstlutheranifalls.site/`.
+5. Open `https://admin.firstlutheranifalls.org/`.
 6. Enter the test `EDITOR_API_TOKEN` and Connect.
 7. Load a page and make a harmless visible test edit.
 8. Save Draft and verify the public site has not changed yet.
 9. Publish Test Branch.
 10. Wait for the Website GitHub Pages workflow to complete.
-11. Refresh `https://firstlutheranifalls.site/` and verify the change.
+11. Refresh `https://firstlutheranifalls.org/` and verify the change.
 12. Make another draft edit, choose Discard Draft, and verify it never reaches the published test branch.
 
 ## Security notes

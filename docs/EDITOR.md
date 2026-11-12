@@ -6,20 +6,20 @@ The editor frontend (`index.html`, `admin/`) and its Cloudflare Worker API (`wor
 
 ## Runtime
 
-- Frontend: GitHub Pages, deployed from this repository's `migration/github-pages-worker-test` branch root, at `admin.firstlutheranifalls.site`.
+- Frontend: GitHub Pages, deployed from this repository's `migration/github-pages-worker-test` branch root, at `admin.firstlutheranifalls.org`.
 - API: Cloudflare Worker `firstlutheranifalls-editor`, deployed from `worker/` via `npx wrangler deploy`, at `firstlutheranifalls-editor.ryan-skogstad.workers.dev`.
 - The Worker holds `GITHUB_TOKEN` and `EDITOR_API_TOKEN` as runtime secrets (Cloudflare dashboard → Worker → Variables and Secrets). Neither value lives in this repository or in browser code.
 
 ## Editing Flow
 
-1. Open `admin.firstlutheranifalls.site`.
+1. Open `admin.firstlutheranifalls.org`.
 2. Enter the `EDITOR_API_TOKEN` value and click **Connect**. The token is kept only in the browser tab's memory for that session.
 3. Choose a page from the list (top-level `*.html` files on the draft branch).
 4. Edit the page and click **Save Draft**.
 
 Save Draft commits the page to the `editor-test-draft` branch via the GitHub Contents API. Image uploads go to `uploads/editor/` on the same branch. Save does not touch the published branch and does not deploy anything.
 
-**Publish Test Branch** fast-forwards `migration/github-pages-worker-test` to the draft commit — only if the draft is a clean, undiverged fast-forward of the target. It is rejected (never auto-merged or force-pushed) if the target branch has moved independently. A successful publish is followed by the website repository's GitHub Pages workflow deploying to `firstlutheranifalls.site`.
+**Publish Test Branch** fast-forwards `migration/github-pages-worker-test` to the draft commit — only if the draft is a clean, undiverged fast-forward of the target. It is rejected (never auto-merged or force-pushed) if the target branch has moved independently. A successful publish is followed by the website repository's GitHub Pages workflow deploying to `firstlutheranifalls.org`.
 
 **Discard Draft** force-resets only `editor-test-draft` back to the current published branch, behind an explicit confirmation. It never touches the published branch.
 

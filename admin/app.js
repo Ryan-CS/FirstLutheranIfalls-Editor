@@ -17,7 +17,7 @@ const connectionState = document.getElementById("connection-state");
 
 const runtimeConfig = window.FLC_EDITOR_CONFIG || {};
 const apiBase = String(runtimeConfig.apiBase || "").replace(/\/$/, "");
-const liveBase = String(runtimeConfig.liveBase || "https://firstlutheranifalls.site").replace(/\/$/, "");
+const liveBase = String(runtimeConfig.liveBase || "https://firstlutheranifalls.org").replace(/\/$/, "");
 
 const state = {
   pages: [],
@@ -312,7 +312,7 @@ async function savePage() {
 }
 
 async function publishChanges() {
-  if (!window.confirm("Publish the saved draft by fast-forwarding the migration test website branch? This affects firstlutheranifalls.site only, not production main.")) return;
+  if (!window.confirm("Publish the saved draft by fast-forwarding the migration test website branch? This updates the live site at firstlutheranifalls.org.")) return;
   setStatus("Publishing test branch...");
   try {
     const result = await fetchJson("/api/editor/publish", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });

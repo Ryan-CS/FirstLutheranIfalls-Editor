@@ -10,7 +10,7 @@ The paired repository, `FirstLutheranIfalls-Website`, contains the canonical dep
 
 - **Active branch:** `migration/github-pages-worker-test` is `origin/HEAD` in both repositories and is where the editor and website actually run. `main` is not the active branch.
 - **RyskStick is retired.** There is no production Linux host, systemd service, Cloudflare Tunnel, Cloudflare Access, or Basic Auth in the current path. Do not assume any of that infrastructure exists unless explicitly reintroduced.
-- The editor frontend (`index.html`, `admin/`) is deployed by GitHub Pages from this repository's branch root at `admin.firstlutheranifalls.site`.
+- The editor frontend (`index.html`, `admin/`) is deployed by GitHub Pages from this repository's branch root at `admin.firstlutheranifalls.org`.
 - The editor backend is a Cloudflare Worker (`worker/`), deployed separately via `npx wrangler deploy`, reachable at `firstlutheranifalls-editor.ryan-skogstad.workers.dev`.
 - The earlier Node server that read/wrote a local `WEBSITE_ROOT` checkout (`server/`) has been removed, along with its dedicated tests. `docs/PUBLISHING.md`, `docs/BACKUPS.md`, and `docs/AUDIT_LOG.md` document that retired design for historical reference only.
 
@@ -41,4 +41,4 @@ Do not add force-push behavior to `publish`, and do not let `discard` touch any 
 
 ## Recovery
 
-Recovery requires the Editor repository, the Website repository, the Cloudflare Worker's runtime secrets (`GITHUB_TOKEN`, `EDITOR_API_TOKEN`), and the GitHub Pages configuration for both `admin.firstlutheranifalls.site` and `firstlutheranifalls.site`. The Editor repository alone cannot restore the public site.
+Recovery requires the Editor repository, the Website repository, the Cloudflare Worker's runtime secrets (`GITHUB_TOKEN`, `EDITOR_API_TOKEN`), and the GitHub Pages configuration for both `admin.firstlutheranifalls.org` and `firstlutheranifalls.org`. The Editor repository alone cannot restore the public site.
